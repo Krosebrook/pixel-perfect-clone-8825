@@ -1,5 +1,6 @@
 import { Users, MessageSquare, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-illustration.png";
 
 export function HeroSection() {
@@ -27,8 +28,12 @@ export function HeroSection() {
             <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors font-medium">Pricing</a>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm">Sign In</Button>
-            <Button variant="default" size="sm">Get Started</Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/auth">Sign In</Link>
+            </Button>
+            <Button variant="default" size="sm" asChild>
+              <Link to="/auth">Get Started</Link>
+            </Button>
           </div>
         </nav>
 
@@ -51,8 +56,8 @@ export function HeroSection() {
             </p>
             
             <div className="flex flex-wrap gap-4 animate-slide-up delay-300">
-              <Button variant="hero" size="xl">
-                Start Free Trial
+              <Button variant="hero" size="xl" asChild>
+                <Link to="/auth">Start Free Trial</Link>
               </Button>
               <Button variant="heroOutline" size="xl">
                 Watch Demo
