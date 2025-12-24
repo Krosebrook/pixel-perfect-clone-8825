@@ -70,6 +70,30 @@ export type Database = {
         }
         Relationships: []
       }
+      pulse_responses: {
+        Row: {
+          created_at: string
+          feedback: string | null
+          id: string
+          mood: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          mood: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          mood?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       recognitions: {
         Row: {
           badge_type: string

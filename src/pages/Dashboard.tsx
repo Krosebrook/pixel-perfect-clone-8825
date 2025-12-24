@@ -11,6 +11,8 @@ import { useState, useEffect } from 'react';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import MessageFeed from '@/components/dashboard/MessageFeed';
 import RecognitionWall from '@/components/dashboard/RecognitionWall';
+import { PulseSurvey } from '@/components/dashboard/PulseSurvey';
+import { PulseAnalytics } from '@/components/dashboard/PulseAnalytics';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -105,6 +107,12 @@ const Dashboard = () => {
           recognitionCount={recognitions.length}
           teamMemberCount={profiles.length}
         />
+
+        {/* Pulse Section */}
+        <div className="grid lg:grid-cols-2 gap-6 mt-8">
+          <PulseSurvey />
+          <PulseAnalytics />
+        </div>
 
         {/* Main Grid */}
         <div className="grid lg:grid-cols-2 gap-6 mt-8">
