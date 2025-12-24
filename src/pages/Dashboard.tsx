@@ -2,10 +2,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useMessages } from '@/hooks/useMessages';
 import { useRecognitions } from '@/hooks/useRecognitions';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Users, LogOut, ChevronDown } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Users, LogOut, ChevronDown, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useState, useEffect } from 'react';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import MessageFeed from '@/components/dashboard/MessageFeed';
 import RecognitionWall from '@/components/dashboard/RecognitionWall';
@@ -14,6 +16,22 @@ const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { messages } = useMessages();
   const { recognitions, profiles } = useRecognitions();
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      supabase
+        .from('profiles')
+        .select('avatar_url')
+        .eq('id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (data?.avatar_url) {
+            setAvatarUrl(data.avatar_url);
+          }
+        });
+    }
+  }, [user]);
 
   const getInitials = (name: string | null | undefined) => {
     if (!name) return 'U';
@@ -43,6 +61,7 @@ const Dashboard = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
+                  <AvatarImage src={avatarUrl || undefined} alt={userName} />
                   <AvatarFallback className="bg-primary/20 text-primary text-sm">
                     {getInitials(userName)}
                   </AvatarFallback>
@@ -52,6 +71,13 @@ const Dashboard = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link to="/settings" className="flex items-center">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Profile Settings
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={signOut} className="text-destructive">
                 <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
